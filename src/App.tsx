@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Box, Flex } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import { RootState } from 'lib/app/store';
+import { useGetTrendingQuery } from 'lib/app/services/repo';
+import RepoList from 'lib/app/features/repo/RepoList';
+import RepoInfo from 'lib/app/features/repo/RepoInfo';
 
-export default App;
+const Index = () => {
+	const { selected_lang, selected_repo } = useSelector(
+		(state: RootState) => state.repo
+	);
+	const { data, isLoading } = useGetTrendingQuery(selected_lang);
+
+	if (isLoading) {
+		return <Box p={4}>Loading...</Box>;
+	}
+
+	return (
+		<Flex gap={4}>
+			<Box w='80' h='100vh' overflow={'auto'} p={4}>
+				<RepoList repos={data?.items || []} />
+			</Box>
+			<Box w='full' h='100vh' overflow={'auto'} p={4}>
+				{selected_repo && <RepoInfo repo={selected_repo} />}
+			</Box>
+		</Flex>
+	);
+};
+
+export default Index;
