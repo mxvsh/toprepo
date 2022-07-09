@@ -18,7 +18,7 @@ const Index = () => {
 
 	return (
 		<Flex gap={4}>
-			<Box w='80' h='100vh' overflow={'auto'} p={4}>
+			<Box w='lg' h='100vh' overflow={'auto'} p={4}>
 				<RepoList repos={data?.items || []} />
 			</Box>
 			<Box w='full' h='100vh' overflow={'auto'} p={4}>
